@@ -662,6 +662,9 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
               Bedankt! Bob neemt snel contact met u op.
             </span>
+            <span class="confirm-msg" id="errorMsg" style="color:var(--orange-deep);">
+              Er ging iets mis. Probeer het nogmaals of bel direct.
+            </span>
           </div>
         </form>
       </div>
@@ -781,9 +784,69 @@
     });
   });
 
+  function toggleValue(groupName){
+    var selected = document.querySelector('[data-toggle-group="' + groupName + '"] .toggle-btn.selected');
+    return selected ? selected.textContent.trim() : '';
+  }
+
+  var submitBtn = panel.querySelector('.submit-btn');
+  var errorMsg = document.getElementById('errorMsg');
+
   panel.addEventListener('submit', function(e){
     e.preventDefault();
-    confirmMsg.classList.add('show');
+    var active = panel.getAttribute('data-active');
+    if (!active) return;
+
+    var data = {
+      access_key: '1c53e0fe-595d-43fa-9beb-f96fec5c3ba6',
+      subject: 'Nieuwe aanvraag via bobdemakelaar.nl — ' + active,
+      from_name: 'Bob de Makelaar website',
+      dienst: active,
+      naam: document.getElementById('c-naam').value,
+      email: document.getElementById('c-email').value,
+      telefoon: document.getElementById('c-tel').value
+    };
+
+    if (active === 'aankoop') {
+      data.zoekgebied = document.getElementById('a-zoekgebied').value;
+      data.type_woning = document.getElementById('a-type').value;
+      data.hypotheekgesprek = toggleValue('a-hypotheek');
+    } else if (active === 'verkoop') {
+      data.locatie = document.getElementById('v-locatie').value;
+      data.type_woning = document.getElementById('v-type').value;
+      data.straat = document.getElementById('v-straat').value;
+    } else if (active === 'taxatie') {
+      data.doel = toggleValue('t-doel');
+      data.type_woning = document.getElementById('t-type').value;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Versturen...';
+    confirmMsg.classList.remove('show');
+    errorMsg.classList.remove('show');
+
+    fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(data)
+    })
+      .then(function(res){ return res.json(); })
+      .then(function(json){
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Versturen';
+        if (json.success) {
+          confirmMsg.classList.add('show');
+          panel.reset();
+          document.querySelectorAll('.toggle-btn.selected').forEach(function(b){ b.classList.remove('selected'); });
+        } else {
+          errorMsg.classList.add('show');
+        }
+      })
+      .catch(function(){
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Versturen';
+        errorMsg.classList.add('show');
+      });
   });
 })();
 </script>
