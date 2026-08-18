@@ -1,3 +1,8 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Bob de Makelaar — Aankoop, Verkoop &amp; Taxatie in de regio Leiden</title>
 <meta name="description" content="Bob de Makelaar begeleidt aankoop, verkoop en taxatie van woningen in Leiden, Leiderdorp, Oud Ade, Roelofarendsveen, Hoogmade, Rijpwetering, Kaag en Braassem, Leimuiden, Sassenheim, Warmond, Oegstgeest, Voorschoten en Zoeterwoude." />
 <style>
@@ -46,28 +51,8 @@
     --shadow: 0 24px 48px -28px rgba(0,0,0,0.6);
     --shadow-sm: 0 10px 24px -16px rgba(0,0,0,0.5);
   }
-  @media (prefers-color-scheme: dark){
-    :root:not([data-theme="light"]){
-      --bg: #14191E;
-      --bg-soft: #191F25;
-      --surface: #1B2229;
-      --ink: #EDF0F2;
-      --ink-soft: #9FACB6;
-      --ink-faint: #6B7882;
-      --border: #2A333B;
-      --border-strong: #37424B;
-      --blue: #7FA6C4;
-      --blue-deep: #AEC9DD;
-      --blue-wash: #202A33;
-      --orange: #DB9C63;
-      --orange-deep: #EBBB8E;
-      --orange-wash: #2B2420;
-      --navy: #9BB0BF;
-      --navy-wash: #1F262C;
-      --shadow: 0 24px 48px -28px rgba(0,0,0,0.6);
-      --shadow-sm: 0 10px 24px -16px rgba(0,0,0,0.5);
-    }
-  }
+  /* Site always renders in the light theme regardless of OS preference,
+     so it looks the same on every device. */
 
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
@@ -490,6 +475,8 @@
     .choice, .panel-wrap, .submit-btn, html{transition:none; scroll-behavior:auto;}
   }
 </style>
+</head>
+<body>
 
 <nav class="topnav">
   <div class="topnav-inner">
@@ -850,3 +837,5 @@
   });
 })();
 </script>
+</body>
+</html>
